@@ -3,8 +3,8 @@ DECLARE
     v_LastName VARCHAR(20);
     v_Name VARCHAR(20);
 BEGIN
-    v_LastName:=$v_LastName;
-    v_Name:=$v_Name;
+    v_LastName:='$v_LastName';
+    v_Name:='$v_Name';
     dbms_output.put_line(v_Name || ' ' || v_LastName);
 END;
 
@@ -56,7 +56,7 @@ DECLARE
     v_HireDate EMPLOYEES.HIRE_DATE%TYPE;
     v_EmployeeID INTEGER;
 BEGIN
-    v_EmployeeID:=$v_EmployeeID;
+    v_EmployeeID:='$v_EmployeeID';
     SELECT LAST_NAME, FIRST_NAME, HIRE_DATE
     INTO v_LastName, v_FirstName, v_HireDate
     FROM EMPLOYEES
@@ -80,7 +80,7 @@ DECLARE
     r_Employee EMPLOYEE_REC;
     v_EmplyeeID INTEGER;
 BEGIN
-    v_EmplyeeID :=$v_EmplyeeID;
+    v_EmplyeeID :='$v_EmplyeeID';
     SELECT LAST_NAME, FIRST_NAME, HIRE_DATE
     INTO r_Employee
     FROM EMPLOYEES
@@ -98,7 +98,7 @@ DECLARE
     r_product PRODUCTS%ROWTYPE;
     v_productId INTEGER;
 BEGIN
-    v_productId :=$v_productId;
+    v_productId :='$v_productId';
     SELECT *
     INTO r_product
     FROM PRODUCTS
@@ -116,7 +116,7 @@ DECLARE
     r_emp EMPLOYEES%ROWTYPE;
     v_EmployeeId EMPLOYEES.EMPLOYEE_ID%TYPE;
 BEGIN
-    v_EmployeeId := $v_EmployeeId;
+    v_EmployeeId := '$v_EmployeeId';
     SELECT *
         INTO r_emp
     FROM EMPLOYEES
