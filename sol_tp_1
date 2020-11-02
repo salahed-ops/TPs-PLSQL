@@ -1,0 +1,214 @@
+//
+//  sol_tp_1.sql
+//  Devoir
+//
+//  Created by Naoufal ACHAHBAR on 02/11/2020.
+//  Copyright © 2020 Naoufal ACHAHBAR. All rights reserved.
+//
+
+
+/* question 1 : */
+
+SET SERVEROUTPUT ON;
+DECLARE
+v_nom VARCHAR2(30);
+v_prenom VARCHAR2(30);
+
+BEGIN
+v_nom := '&v_nom';
+v_prenom := '&v_prenom';
+DBMS_OUTPUT.PUT_LINE('Merci ' || v_nom || ' ' || v_prenom);
+END;
+
+
+/* question 2 : */
+
+SET SERVEROUTPUT ON;
+DECLARE
+    compteur1 INTEGER;
+BEGIN
+    SELECT COUNT (*) INTO compteur1 FROM EMPLOYEES;
+    dbms_output.put_line(compteur1);
+END;
+
+
+/* question 3 : */
+
+SET SERVEROUTPUT ON;
+DECLARE
+    compteur2 INTEGER;
+BEGIN
+    SELECT COUNT (*) INTO compteur2 FROM EMPLOYEES WHERE MANAGER_ID = 1;
+    dbms_output.put_line(compteur2);
+END;
+
+
+/* question 4 : */
+
+SET SERVEROUTPUT ON;
+DECLARE
+	compteur1 INTEGER;
+    compteur2 INTEGER;
+    prop INTEGER;
+BEGIN
+	SELECT COUNT (*) INTO compteur1 FROM EMPLOYEES;
+    SELECT count (*) INTO compteur2 FROM EMPLOYEES WHERE MANAGER_ID = 1;
+    prop := (compteur2/compteur1)*100;
+    dbms_output.put_line(prop);
+END;
+
+
+/* question 5 : */
+
+SET SERVEROUTPUT ON;
+DECLARE
+	v_last_name VARCHAR2(30);
+    v_first_name VARCHAR2(30);
+    v_hire_date DATE;
+    v_id INTEGER;
+BEGIN
+    v_id := '&v_id';
+    SELECT LAST_NAME, FIRST_NAME, HIRE_DATE
+    INTO v_last_name, v_first_name, v_hire_date
+    FROM EMPLOYEES
+    WHERE EMPLOYEE_ID=v_id;
+    dbms_output.put_line(v_last_name);
+    dbms_output.put_line(v_first_name);
+    dbms_output.put_line(v_hire_date);
+END;
+
+
+/* question 6 : */
+
+DECLARE
+TYPE EMPLOYEE_REC
+IS
+RECORD
+( employee_id NUMBER,
+last_name EMPLOYEES.LAST_NAME%type,
+first_name EMPLOYEES.FIRST_NAME%type,
+hire_date EMPLOYEES.HIRE_DATE%type );
+EMP EMPLOYEE_REC;
+BEGIN
+EMP.employee_id := &vid;
+    SELECT LAST_NAME INTO EMP.last_name
+    FROM EMPLOYEES
+    WHERE EMPLOYEE_ID = EMP.employee_id;
+     SELECT FIRST_NAME INTO EMP.first_name
+    FROM EMPLOYEES
+    WHERE EMPLOYEE_ID = EMP.employee_id;
+     SELECT HIRE_DATE INTO EMP.hire_date
+    FROM EMPLOYEES
+    WHERE EMPLOYEE_ID = EMP.employee_id;
+    dbms_output.put_line('LAST NAME  : ' || EMP.last_name);
+    dbms_output.put_line('FIRST NAME : ' || EMP.first_name);
+    dbms_output.put_line('HIRE DATE  : ' || EMP.hire_date);
+END;
+
+
+/* question 7 : */
+
+SET SERVEROUTPUT ON;
+DECLARE
+    PRODUCTS_REC PRODUCTS%rowtype;
+BEGIN
+    PRODUCTS_REC.PRODUCT_ID := &v_P_ID;
+    SELECT * INTO PRODUCTS_REC FROM PRODUCTS WHERE PRODUCT_ID = PRODUCTS_REC.PRODUCT_ID;
+    dbms_output.put_line(PRODUCTS_REC.PRODUCT_ID);
+    dbms_output.put_line(PRODUCTS_REC.PRODUCT_NAME);
+    dbms_output.put_line(PRODUCTS_REC.DESCRIPTION);
+    dbms_output.put_line(PRODUCTS_REC.STANDARD_COST);
+    dbms_output.put_line(PRODUCTS_REC.LIST_PRICE);
+    dbms_output.put_line(PRODUCTS_REC.CATEGORY_ID);
+END;
+
+
+/* question 8 : */
+
+SET SERVEROUTPUT ON;
+DECLARE
+TYPE EMPLOYEE_REC
+IS
+RECORD
+(EMPLOYEE_ID EMPLOYEES.EMPLOYEE_ID%type,
+LAST_NAME EMPLOYEES.LAST_NAME%type,
+FIRST_NAME EMPLOYEES.FIRST_NAME%type,
+EMAIL EMPLOYEES.EMAIL%type,
+PHONE EMPLOYEES.PHONE%type,
+HIRE_DATE EMPLOYEES.HIRE_DATE%type );
+r_emp EMPLOYEE_REC;
+
+TYPE EMPLOYEE_RECO
+IS
+RECORD
+(MANAGER_ID EMPLOYEES.MANAGER_ID%type,
+JOB_TITLE EMPLOYEES.JOB_TITLE%type );
+r_mgr EMPLOYEE_RECO;
+BEGIN
+    r_emp.EMPLOYEE_ID := &V_EID;
+    SELECT EMPLOYEE_ID INTO r_emp.EMPLOYEE_ID
+    FROM EMPLOYEES
+    WHERE EMPLOYEE_ID = r_emp.EMPLOYEE_ID;
+    SELECT FIRST_NAME INTO r_emp.FIRST_NAME
+    FROM EMPLOYEES
+    WHERE EMPLOYEE_ID = r_emp.EMPLOYEE_ID;
+    SELECT LAST_NAME INTO r_emp.LAST_NAME
+    FROM EMPLOYEES
+    WHERE EMPLOYEE_ID = r_emp.EMPLOYEE_ID;
+    SELECT EMAIL INTO r_emp.EMAIL
+    FROM EMPLOYEES
+    WHERE EMPLOYEE_ID = r_emp.EMPLOYEE_ID;
+    SELECT PHONE INTO r_emp.PHONE
+    FROM EMPLOYEES
+    WHERE EMPLOYEE_ID = r_emp.EMPLOYEE_ID;
+    SELECT HIRE_DATE INTO r_emp.HIRE_DATE
+    FROM EMPLOYEES
+    WHERE EMPLOYEE_ID = r_emp.EMPLOYEE_ID;
+    dbms_output.put_line('');
+    dbms_output.put_line('EMPLOYEE INFO : ');
+    dbms_output.put_line(r_emp.EMPLOYEE_ID);
+    dbms_output.put_line(r_emp.FIRST_NAME);
+    dbms_output.put_line(r_emp.LAST_NAME);
+    dbms_output.put_line(r_emp.EMAIL);
+    dbms_output.put_line(r_emp.PHONE);
+    dbms_output.put_line(r_emp.HIRE_DATE);
+    
+    SELECT MANAGER_ID INTO r_mgr.MANAGER_ID
+    FROM EMPLOYEES
+    WHERE EMPLOYEE_ID = r_emp.EMPLOYEE_ID;
+    SELECT JOB_TITLE INTO r_mgr.JOB_TITLE
+    FROM EMPLOYEES
+    WHERE EMPLOYEE_ID = r_emp.EMPLOYEE_ID;
+    dbms_output.put_line('');
+    dbms_output.put_line('MANAGER INFO : ');
+    dbms_output.put_line(r_mgr.MANAGER_ID);
+    dbms_output.put_line(r_mgr.JOB_TITLE);
+END;
+
+
+/* question 9 : */
+
+SET SERVEROUTPUT ON;
+DECLARE
+type ORDERS_REC
+is
+record
+(
+v_name orders.name%type,
+v_statut orders.status%type,
+v_salsman orders.salsman%type,
+v_order_date orders.order_date%type
+);
+ord ORDERS_REC;
+type CUSTOM is table of CUSTOMERS%rowtype ;
+custm CUSTOM;
+BEGIN
+    custm.CUSTOMER_ID := &v_C_ID;
+    SELECT * into ord
+    FROM ORDERS
+    WHERE ord.CUSTOMER_ID = custm.CUSTOMER_ID;
+    dbms_output.put_line(ord.STATUS);
+    dbms_output.put_line(ord.SALESMAN_ID);
+    dbms_output.put_line(ord.ORDER_DATE);
+END;
+
