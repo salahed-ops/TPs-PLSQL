@@ -1,0 +1,201 @@
+--QUEST 1:-------------------------------------------------------------------------------------------
+
+SET SERVEROUTPUT ON;
+DECLARE
+	v_nom varchar2(50);
+	v_prenom varchar2(50);
+BEGIN
+	v_nom := '&nom';
+	v_prenom := '&prenom';
+	dbms_output.put_line('Nom : ' || v_nom || '---------- Prenom : ' || v_prenom);
+END;
+	
+--QUEST 2:---------------------------------------------------------------------------------------------
+
+SET SERVEROUTPUT ON;
+DECLARE
+    nbrtot INTEGER;
+BEGIN
+    SELECT COUNT (*) INTO nbrtot
+    FROM EMPLOYEES;
+    dbms_output.put_line(nbrtot);
+END;
+
+--QUEST 3:----------------------------------------------------------------------------------------------
+
+SET SERVEROUTPUT ON;
+DECLARE
+    nbrmanagid INTEGER;
+BEGIN
+    SELECT COUNT (*) INTO nbrmanagid
+    FROM EMPLOYEES
+    WHERE MANAGER_ID = 1;
+    dbms_output.put_line(nbrmanagid);
+END;
+
+--QUEST 4:-------------------------------------------------------------------------------------------------
+
+SET SERVEROUTPUT ON;
+DECLARE
+    nbrtot INTEGER;
+    nbrmanagid INTEGER;
+    pourc INTEGER;
+BEGIN
+    SELECT COUNT (*) INTO nbrtot
+    FROM EMPLOYEES;
+    SELECT COUNT (*) INTO nbrmanagid
+    FROM EMPLOYEES
+    WHERE MANAGER_ID = 1;
+    pourc := nbrmanagid*100/nbrtot;
+    dbms_output.put_line(nbrtot);
+    dbms_output.put_line(nbrmanagid);
+    dbms_output.put_line(pourc);
+END;
+
+--QUEST 5 : -----------------------------------------------------------------------------------------------
+
+SET SERVEROUTPUT ON;
+DECLARE
+
+    v_last_name employees.last_name%TYPE;
+    v_first_name employees.first_name%TYPE;
+    v_hire_date EMPLOYEES.HIRE_DATE%TYPE;
+    v_id NUMBER;
+BEGIN
+
+    v_id := &id;
+    SELECT LAST_NAME INTO v_last_name
+    FROM EMPLOYEES
+    WHERE EMPLOYEE_ID = v_id;
+    SELECT FIRST_NAME INTO v_first_name
+    FROM EMPLOYEES
+    WHERE EMPLOYEE_ID = v_id;
+    SELECT HIRE_DATE INTO v_hire_date
+    FROM EMPLOYEES
+    WHERE EMPLOYEE_ID = v_id;
+    dbms_output.put_line('LAST NAME : ' || v_last_name || '------FIRST NAME : ' || v_first_name || ' --- HIRE DATE  : ' || v_hire_date);
+END;
+
+--QUEST 6:---------------------------------------------------------------------------------------------------------------------
+
+DECLARE
+TYPE employeesinfo
+IS
+RECORD
+( employee_id NUMBER,
+last_name employees.last_name%type,
+first_name employees.first_name%type,
+hire_date employees.hire_date%type
+);
+emp employeesinfo;
+BEGIN
+emp.employee_id := &vid;
+    SELECT LAST_NAME INTO emp.last_name
+    FROM EMPLOYEES
+    WHERE EMPLOYEE_ID = emp.employee_id;
+     SELECT FIRST_NAME INTO emp.first_name
+    FROM EMPLOYEES
+    WHERE EMPLOYEE_ID = emp.employee_id;
+     SELECT HIRE_DATE INTO emp.hire_date
+    FROM EMPLOYEES
+    WHERE EMPLOYEE_ID = emp.employee_id;
+    dbms_output.put_line('LAST NAME : ' || emp.last_name || '------FIRST NAME : ' || emp.first_name || ' --- HIRE DATE  : ' || emp.hire_date);
+END;
+
+--QUEST 7:-------------------------------------------------------------------------------------------------------------
+DECLARE
+TYPE productinfo
+IS
+RECORD
+( product_id products.product_id%type,
+product_name products.product_name%type,
+description products.description%type,
+STANDARD_COST products.standard_cost%type,
+list_price products.list_price%type,
+category_id products.category_id%type
+);
+prod productinfo;
+BEGIN
+prod.product_id := &vprod;
+    SELECT product_NAME INTO prod.product_name
+    FROM PRODUCTS
+    WHERE PRODUCT_ID = prod.product_id;
+    SELECT description INTO prod.description
+    FROM PRODUCTS
+    WHERE PRODUCT_ID = prod.product_id;
+    SELECT standard_cost INTO prod.standard_cost
+    FROM PRODUCTS
+    WHERE PRODUCT_ID = prod.product_id;
+    SELECT list_price INTO prod.list_price
+    FROM PRODUCTS
+    WHERE PRODUCT_ID = prod.product_id;
+    SELECT category_id INTO prod.category_id
+    FROM PRODUCTS
+    WHERE PRODUCT_ID = prod.product_id;
+    dbms_output.put_line('Product ID : ' || PROD.product_id || '------PRODUCT NAME : ' || prod.product_name || ' --- DESCRIPTION  : ' || prod.description || ' --- STANDARD COST  : ' || prod.standard_cost || ' --- LIST PRICE  : ' || prod.list_price || ' --- CATEGORY ID  : ' || prod.category_id);
+END;
+
+--QUEST 8:-------------------------------------------------------------------------------------------------------------------
+
+SET SERVEROUTPUT ON;
+DECLARE
+    TYPE empinfo
+    IS
+    RECORD(
+        employee_id employees.employee_id%type,
+        first_name employees.first_name%type,
+        last_name employees.last_name%type,
+        email employees.email%type,
+        phone employees.phone%type,
+        hire_date employees.hire_date%type
+    );
+    TYPE managinfo
+    IS
+    RECORD(
+        manager_id employees.manager_id%type,
+        job_title employees.job_title%type
+    );
+    r_emp empinfo;
+    r_mgr managinfo;
+BEGIN
+r_emp.employee_id := &vid;
+SELECT  first_name INTO r_emp.first_name FROM employees WHERE employee_id = r_emp.employee_id;
+SELECT  last_name INTO r_emp.last_name FROM employees WHERE employee_id = r_emp.employee_id;
+SELECT  email INTO r_emp.email FROM employees WHERE employee_id = r_emp.employee_id;
+SELECT  phone INTO r_emp.phone FROM employees WHERE employee_id = r_emp.employee_id;
+SELECT  hire_date INTO r_emp.hire_date FROM employees WHERE employee_id = r_emp.employee_id;
+SELECT  manager_id INTO r_mgr.manager_id FROM employees WHERE employee_id = r_emp.employee_id;
+SELECT  job_title INTO r_mgr.job_title FROM employees WHERE employee_id = r_emp.employee_id;
+dbms_output.put_line('Les informations de l employe : --ID : ' ||  r_emp.employee_id || ' --NAME : ' || r_emp.last_name || '   ' || r_emp.first_name);
+dbms_output.put_line(' --EMAIL : ' || r_emp.email || ' --PHONE : ' || r_emp.phone || ' --HIRE DATE : ' || r_emp.hire_date);
+dbms_output.put_line('Les informations du manager : --MANAGER ID : ' || r_mgr.manager_id || ' --JOB TITLE : ' || r_mgr.job_title);
+END;
+
+--QUEST 9 :---------------------------------------------------------------------------------------------------------------
+
+DECLARE
+    TYPE custinfo
+    IS
+    RECORD(
+        customrec customers%rowtype
+    );
+    TYPE ordinfo
+    IS
+    RECORD(
+        ordrec orders%rowtype
+    );
+    r_cust custinfo;
+    r_ord orsinfo;
+    TYPE ordtab IS TABLE OF ORDERS.ORDER_ID%TYPE;
+    ord_id ordtab;
+BEGIN
+    r_cust.customrec.customer_id := &cusid;
+    SELECT NAME INTO r_cust.customrec.name FROM CUSTOMERS WHERE CUSTOMER_ID = r_cust.customrec.customer_id;
+    DBMS_OUTPUT.PUT_LINE('LE CONSOMATEUR  ' || r_cust.customrec.name || ' A LA DEMANDE SUIVANTE :');
+    FOR i IN 1 .. (SELECT COUNT(*) FROM ORDERS WHERE CUSTOMER_ID = r_cust.customrec.customer_id;) LOOP
+    SELECT ORDER_ID INTO ord_id(i) FROM ORDERS WHERE CUSTOMER_ID = r_cust.customrec.customer_id;
+    end loop;
+    FOR i IN 1 .. (SELECT COUNT(*) FROM ORDERS WHERE CUSTOMER_ID = r_cust.customrec.customer_id;) LOOP
+     dbms_output.put_line(ord_id(i));
+    end loop;
+END;
