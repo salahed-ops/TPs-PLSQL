@@ -33,9 +33,6 @@ SELECT count(*) INTO v_total FROM employees;
 IF SQL%FOUND THEN 
 DBMS_OUTPUT.PUT_LINE('Le nombre des employées dans la table est  :' || v_total);
 END IF;
-EXCEPTION 
-WHEN NO_DATA_FOUND THEN
-DBMS_OUTPUT.PUT_LINE('Le nombre des employées dans la table est  :');
 END;
 
 --*****Méthode 2:
